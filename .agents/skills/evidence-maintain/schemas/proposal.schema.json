@@ -1,0 +1,107 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "evidence-proposal-0.1.0"
+    },
+    "evidence_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "enum": [
+              "Add",
+              "Revise",
+              "Merge",
+              "Split",
+              "Link case",
+              "No change"
+            ]
+          },
+          "target_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "proposed_content": {
+            "type": "string",
+            "minLength": 1
+          },
+          "duplicate_check": {
+            "type": "string",
+            "minLength": 1
+          },
+          "conflicts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0
+          },
+          "impact": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "operation",
+          "target_refs",
+          "source_ids",
+          "proposed_content",
+          "duplicate_check",
+          "conflicts",
+          "impact"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "evidence_hash",
+    "summary",
+    "changes",
+    "questions",
+    "limitations"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

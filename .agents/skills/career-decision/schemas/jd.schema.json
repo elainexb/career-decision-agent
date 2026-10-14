@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "JD Screenshot Extraction Schema",
+  "type": "object",
+  "properties": {
+    "images": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "readability": {
+            "type": "string",
+            "enum": [
+              "Complete",
+              "Partial",
+              "Unreadable"
+            ]
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 0
+          },
+          "kind": {
+            "enum": [
+              "jd_image",
+              "jd_text"
+            ]
+          }
+        },
+        "required": [
+          "source_id",
+          "path",
+          "readability",
+          "issues"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "company": {
+      "type": "string"
+    },
+    "role_title": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "jd_item_id": {
+            "type": "string"
+          },
+          "section": {
+            "type": "string",
+            "enum": [
+              "Company",
+              "Role",
+              "Responsibilities",
+              "Requirements",
+              "Preferred",
+              "Employment",
+              "Compensation",
+              "Benefits",
+              "Other"
+            ]
+          },
+          "exact_text": {
+            "type": "string"
+          },
+          "source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "uncertain": {
+            "type": "boolean"
+          },
+          "anchors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "source_id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "location": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "source_id",
+                "location"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "jd_item_id",
+          "section",
+          "exact_text",
+          "source_ids",
+          "uncertain"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "unreadable_regions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 0
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "images",
+    "company",
+    "role_title",
+    "items",
+    "unreadable_regions"
+  ]
+}

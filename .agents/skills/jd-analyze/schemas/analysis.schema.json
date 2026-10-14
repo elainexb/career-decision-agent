@@ -1,0 +1,312 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "jd-analysis-0.2.0"
+    },
+    "jd_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "mission": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "Verified Fact",
+            "Supported Inference",
+            "Hypothesis",
+            "Unknown"
+          ]
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "text",
+        "status",
+        "refs"
+      ],
+      "additionalProperties": false
+    },
+    "hiring_hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "Verified Fact",
+              "Supported Inference",
+              "Hypothesis",
+              "Unknown"
+            ]
+          },
+          "refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0
+          }
+        },
+        "required": [
+          "text",
+          "status",
+          "refs"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "requirement_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "capability",
+              "condition"
+            ]
+          },
+          "jd_item_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1
+          },
+          "jd_text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "interpretation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "importance": {
+            "enum": [
+              "Critical",
+              "Important",
+              "Optional",
+              "Unclear"
+            ]
+          },
+          "importance_reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "Verified Fact",
+              "Supported Inference",
+              "Hypothesis",
+              "Unknown"
+            ]
+          }
+        },
+        "required": [
+          "requirement_id",
+          "kind",
+          "jd_item_ids",
+          "jd_text",
+          "interpretation",
+          "importance",
+          "importance_reason",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "role_context": {
+      "type": "object",
+      "properties": {
+        "industry": {
+          "$ref": "#/$defs/claim"
+        },
+        "business_scenario": {
+          "$ref": "#/$defs/claim"
+        },
+        "work_nature": {
+          "$ref": "#/$defs/work_nature"
+        },
+        "decision_rights": {
+          "$ref": "#/$defs/claim"
+        },
+        "accountability": {
+          "$ref": "#/$defs/claim"
+        },
+        "people_management": {
+          "$ref": "#/$defs/people_management"
+        }
+      },
+      "required": [
+        "industry",
+        "business_scenario",
+        "work_nature",
+        "decision_rights",
+        "accountability",
+        "people_management"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "jd_hash",
+    "mission",
+    "hiring_hypotheses",
+    "requirements",
+    "unknowns",
+    "role_context"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "claim": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "Verified Fact",
+            "Supported Inference",
+            "Hypothesis",
+            "Unknown"
+          ]
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "text",
+        "status",
+        "refs"
+      ],
+      "additionalProperties": false
+    },
+    "work_nature": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "Verified Fact",
+            "Supported Inference",
+            "Hypothesis",
+            "Unknown"
+          ]
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "classification": {
+          "enum": [
+            "Execution contribution",
+            "Delivery coordination",
+            "Domain owner",
+            "Overall product or business owner",
+            "Mixed",
+            "Unknown"
+          ]
+        }
+      },
+      "required": [
+        "text",
+        "status",
+        "refs",
+        "classification"
+      ],
+      "additionalProperties": false
+    },
+    "people_management": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "Verified Fact",
+            "Supported Inference",
+            "Hypothesis",
+            "Unknown"
+          ]
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "classification": {
+          "enum": [
+            "Explicit yes",
+            "Explicit no",
+            "Unknown"
+          ]
+        }
+      },
+      "required": [
+        "text",
+        "status",
+        "refs",
+        "classification"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

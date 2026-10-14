@@ -1,0 +1,126 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "evidence-review-0.1.0"
+    },
+    "mode": {
+      "enum": [
+        "Preliminary",
+        "Personal"
+      ]
+    },
+    "evidence_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "resume_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "jd_hash": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "verdict": {
+      "enum": [
+        "Pass",
+        "Revise",
+        "Insufficient Evidence"
+      ]
+    },
+    "jd_alignment": {
+      "enum": [
+        "Addressed",
+        "Partial",
+        "Unknown",
+        "Not assessed"
+      ]
+    },
+    "lines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "classification": {
+            "enum": [
+              "Supported",
+              "Not a claim",
+              "Revise",
+              "Insufficient Evidence"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "profile_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "line",
+          "text",
+          "classification",
+          "evidence_refs",
+          "reason",
+          "profile_refs"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "scope": {
+      "enum": [
+        "Excerpt",
+        "Full resume"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "evidence_hash",
+    "resume_hash",
+    "jd_hash",
+    "verdict",
+    "jd_alignment",
+    "lines",
+    "limitations",
+    "scope"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

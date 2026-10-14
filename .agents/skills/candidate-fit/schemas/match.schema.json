@@ -1,0 +1,172 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "evidence-match-0.1.0"
+    },
+    "mode": {
+      "enum": [
+        "Preliminary",
+        "Personal"
+      ]
+    },
+    "evidence_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "jd_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "matches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "jd_item_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "jd_text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "importance": {
+            "enum": [
+              "Critical",
+              "Important",
+              "Optional",
+              "Unclear"
+            ]
+          },
+          "importance_reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "classification": {
+            "enum": [
+              "Strong",
+              "Transferable",
+              "Partial",
+              "Gap",
+              "Unknown"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "claim_status": {
+            "enum": [
+              "Verified Fact",
+              "Supported Inference",
+              "Hypothesis",
+              "Unknown"
+            ]
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1
+          },
+          "missing_dimensions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "next_check": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "jd_item_id",
+          "jd_text",
+          "importance",
+          "importance_reason",
+          "classification",
+          "evidence_refs",
+          "claim_status",
+          "rationale",
+          "missing_dimensions",
+          "next_check"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "resume_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "priority": {
+            "enum": [
+              "P0",
+              "P1",
+              "P2"
+            ]
+          },
+          "action": {
+            "enum": [
+              "Promote",
+              "Reframe",
+              "De-emphasize",
+              "Need evidence"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "jd_item_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "proposed_text": {
+            "type": "string"
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "priority",
+          "action",
+          "evidence_refs",
+          "jd_item_ids",
+          "proposed_text",
+          "rationale"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "evidence_hash",
+    "jd_hash",
+    "matches",
+    "resume_changes",
+    "limitations"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

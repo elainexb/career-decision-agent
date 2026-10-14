@@ -1,0 +1,251 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "career-decision-0.1.0"
+    },
+    "jd_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "analysis_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "fit_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evidence_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "preferences_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "priority": {
+      "enum": [
+        "High Priority",
+        "Selective",
+        "Low Priority",
+        "Insufficient Information"
+      ]
+    },
+    "hard_blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "condition_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "preference_index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "condition_id",
+          "preference_index",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "material_unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "critical_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "career_value": {
+      "type": "object",
+      "properties": {
+        "classification": {
+          "enum": [
+            "Expanded",
+            "Maintained",
+            "Narrowed",
+            "Unknown"
+          ]
+        },
+        "assessment": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "minLength": 1
+            },
+            "status": {
+              "enum": [
+                "Verified Fact",
+                "Supported Inference",
+                "Hypothesis",
+                "Unknown"
+              ]
+            },
+            "refs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 0
+            }
+          },
+          "required": [
+            "text",
+            "status",
+            "refs"
+          ],
+          "additionalProperties": false
+        },
+        "next_checks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "classification",
+        "assessment",
+        "next_checks"
+      ],
+      "additionalProperties": false
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "dimension": {
+            "enum": [
+              "Company",
+              "Employment",
+              "Ownership",
+              "Longevity"
+            ]
+          },
+          "level": {
+            "enum": [
+              "Low",
+              "Medium",
+              "High",
+              "Unknown"
+            ]
+          },
+          "assessment": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "enum": [
+                  "Verified Fact",
+                  "Supported Inference",
+                  "Hypothesis",
+                  "Unknown"
+                ]
+              },
+              "refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 0
+              }
+            },
+            "required": [
+              "text",
+              "status",
+              "refs"
+            ],
+            "additionalProperties": false
+          },
+          "next_checks": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 0
+          }
+        },
+        "required": [
+          "dimension",
+          "level",
+          "assessment",
+          "next_checks"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 4
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "why_not_higher": {
+      "type": "string"
+    },
+    "next_checks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "schema_version",
+    "jd_hash",
+    "analysis_hash",
+    "fit_hash",
+    "evidence_hash",
+    "preferences_hash",
+    "priority",
+    "hard_blockers",
+    "material_unknowns",
+    "critical_gaps",
+    "career_value",
+    "risks",
+    "rationale",
+    "why_not_higher",
+    "next_checks",
+    "limitations"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

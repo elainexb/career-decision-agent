@@ -1,0 +1,327 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "requirement-match-0.3.0"
+    },
+    "mode": {
+      "enum": [
+        "Preliminary",
+        "Personal"
+      ]
+    },
+    "evidence_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "jd_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "matches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "jd_text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "importance": {
+            "enum": [
+              "Critical",
+              "Important",
+              "Optional",
+              "Unclear"
+            ]
+          },
+          "importance_reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "classification": {
+            "enum": [
+              "Strong",
+              "Transferable",
+              "Partial",
+              "Gap",
+              "Unknown"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "claim_status": {
+            "enum": [
+              "Verified Fact",
+              "Supported Inference",
+              "Hypothesis",
+              "Unknown"
+            ]
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1
+          },
+          "missing_dimensions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "next_check": {
+            "type": "string"
+          },
+          "requirement_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "direct_support": {
+            "type": "object",
+            "properties": {
+              "level": {
+                "enum": [
+                  "High",
+                  "Limited",
+                  "Unknown"
+                ]
+              },
+              "evidence_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "level",
+              "evidence_refs",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "transfer_support": {
+            "type": "object",
+            "properties": {
+              "level": {
+                "enum": [
+                  "High",
+                  "Limited",
+                  "Unknown",
+                  "Not assessed"
+                ]
+              },
+              "evidence_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              },
+              "mechanism": {
+                "type": "string"
+              },
+              "limits": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "level",
+              "evidence_refs",
+              "reason",
+              "mechanism",
+              "limits"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "requirement_id",
+          "jd_text",
+          "importance",
+          "importance_reason",
+          "classification",
+          "evidence_refs",
+          "claim_status",
+          "rationale",
+          "missing_dimensions",
+          "next_check",
+          "direct_support",
+          "transfer_support"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "resume_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "priority": {
+            "enum": [
+              "P0",
+              "P1",
+              "P2"
+            ]
+          },
+          "action": {
+            "enum": [
+              "Promote",
+              "Reframe",
+              "De-emphasize",
+              "Need evidence"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "proposed_text": {
+            "type": "string"
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1
+          },
+          "requirement_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "priority",
+          "action",
+          "evidence_refs",
+          "requirement_ids",
+          "proposed_text",
+          "rationale"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "analysis_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "context_fit": {
+      "type": "object",
+      "properties": {
+        "industry": {
+          "$ref": "#/$defs/context_comparison"
+        },
+        "business_scenario": {
+          "$ref": "#/$defs/context_comparison"
+        }
+      },
+      "required": [
+        "industry",
+        "business_scenario"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "mode",
+    "evidence_hash",
+    "jd_hash",
+    "matches",
+    "resume_changes",
+    "limitations",
+    "analysis_hash",
+    "context_fit"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "context_comparison": {
+      "type": "object",
+      "properties": {
+        "classification": {
+          "enum": [
+            "Directly related",
+            "Adjacent transferable",
+            "Materially different",
+            "Unknown"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "differences": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "status": {
+          "enum": [
+            "Supported Inference",
+            "Hypothesis",
+            "Unknown"
+          ]
+        }
+      },
+      "required": [
+        "classification",
+        "rationale",
+        "target_refs",
+        "evidence_refs",
+        "differences",
+        "status"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
