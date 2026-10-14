@@ -1,32 +1,32 @@
-# Career Agent — 当前最小运行包
+# Career Decision Agent — Minimal Runtime Package
 
-一个 Hermes Agent、九个按需组合的业务 Skills、四个 Career 工具。只包含当前运行和首次配置需要的文件；不包含旧代码、历史资料、测试档案、个人经历或登录信息。
+One Hermes Agent composes nine task Skills through four Career tools. This package contains only the files needed for the current runtime and initial setup. Historical code, archives, test records, personal information, and credentials are excluded.
 
-## 使用范围
+## Scope
 
-- 真实简历 PDF/文本/图片 → 待确认 Evidence 候选。
-- 新 JD + 一份已有个人 Evidence → 原文提取、要求分析、能力及行业/场景匹配、风险/职业价值、简历建议、HTML/Markdown 报告。
-- 补充材料 → Evidence 或案例维护提案；按明确要求生成简历文本草稿并审核。
-- 事实和正式 ID 不自动批准，维护不自动应用。公司调查延后，PDF/Word 简历视觉排版审核不在本版范围。
-- 长期职业偏好保存、未确认表达候选采集尚未实施。当前只消费调用方确认并配置的条件，不声称具有自动偏好 memory。
+- Actual resume PDF, text, or images → pending Evidence candidates.
+- A new job description (JD) and one existing personal Evidence document → source extraction, requirement analysis, capability and industry/scenario comparisons, risk and career-value assessment, resume suggestions, and HTML/Markdown reports.
+- Supplementary materials → Evidence or case-maintenance proposals. Generate and review a resume text draft when explicitly requested.
+- Facts and formal IDs are not approved automatically, and maintenance proposals are not applied automatically. Company research is deferred. Visual layout review of PDF/Word resumes is outside this version's scope.
+- Long-term career-preference storage and collection of unresolved preference expressions are not implemented. The runtime consumes only caller-confirmed, configured constraints; automatic preference memory is not available.
 
-## 文件职责
+## File Responsibilities
 
-| 位置 | 责任 |
+| Location | Responsibility |
 |---|---|
-| `AGENTS.md` | 当前运行入口与事实/权限边界，不依赖旧背景 |
-| `.agents/skills/` | 九个 Skill，实际引用的规则/schema，以及 Evidence 校验脚本 |
-| `plugins/career-decision/` | Hermes 注册、工具适配和图像传输 |
-| `harness/worker.py` + `CONTRACT.md` | 输入快照、上下文、产物依赖、校验、状态与失败保留 |
-| `harness/report.py` + `report.template.html` | 验证后生成网页及 Markdown |
-| `harness/install_profile.py` | 首次配置已有的空专用 profile |
-| `requirements.txt` | 当前依赖版本；PDF 还需要系统 `pdftoppm` |
+| `AGENTS.md` | Current runtime instructions and factual/permission boundaries, independent of historical context |
+| `.agents/skills/` | Nine Skills, their referenced rules and schemas, and the Evidence validation helper |
+| `plugins/career-decision/` | Hermes registration, tool adaptation, and image delivery |
+| `harness/worker.py` + `CONTRACT.md` | Input snapshots, context, artifact dependencies, validation, state, and retained failures |
+| `harness/report.py` + `report.template.html` | HTML and Markdown generation after validation |
+| `harness/install_profile.py` | Initial configuration of an existing, empty dedicated profile |
+| `requirements.txt` | Current dependency versions; PDF processing also requires the system `pdftoppm` executable |
 
-## 首次配置
+## Initial Setup
 
-需要已有 Hermes 安装、可用的 `openai-codex` 登录和 `gpt-6.1-sol` 访问权限。本包不复制登录信息、不改 Hermes core。当前已配置的 profile 不要重复执行 installer：它会拒绝覆盖。
+An existing Hermes installation, a working `openai-codex` login, and access to `gpt-6.1-sol` are required. This package does not copy credentials or modify Hermes core. Do not rerun the installer against an already configured profile: it refuses to overwrite existing plugin configuration.
 
-在包根目录准备 Python 环境和本地数据位置：
+From the package root, prepare the Python environment and local data directory:
 
 ```bash
 python3 -m venv .venv
@@ -34,7 +34,7 @@ python3 -m venv .venv
 mkdir -p data/private
 ```
 
-系统需要 Poppler 的 `pdftoppm`。先按 Hermes 当前 profile 命令创建尚未配置插件的 `career-decision` 专用 profile，再执行：
+Install Poppler's `pdftoppm` executable. Using Hermes's current profile commands, first create a dedicated `career-decision` profile with no configured plugins. Then run:
 
 ```bash
 .venv/bin/python harness/install_profile.py \
@@ -45,26 +45,26 @@ mkdir -p data/private
   --input-root "$HOME/Downloads"
 ```
 
-installer 生成忽略的 `data/private/hermes-config.local.json`，以及 profile 配置、SOUL 和插件源码链接。输入位置、Evidence 路径、输出位置、PDF 工具和已确认条件属于本机配置，不写入 Skill。
+The installer generates the Git-ignored `data/private/hermes-config.local.json`, profile configuration, SOUL instructions, and a link to the plugin source. Input locations, the Evidence path, output storage, PDF tools, and confirmed constraints belong to local configuration rather than Skill instructions.
 
-JD 分析需要一份符合 `resume-intake/schemas/evidence.schema.json` 的个人 Evidence；默认本地位置是 `data/private/career-master.local.yaml`。可以在生成的 runtime config 中把 `evidence_path` 指向你已保存的那份资料，保持单一权威来源，无需复制旧记录。首次 intake 可以在没有当前 Evidence 的情况下生成 pending 候选，但本版不会自动把候选升级为正式资料。
+JD analysis requires one personal Evidence document conforming to `.agents/skills/resume-intake/schemas/evidence.schema.json`. Its default local location is `data/private/career-master.local.yaml`. Set `evidence_path` in the generated runtime configuration to your existing document to preserve a single authoritative source without copying old records. First intake can produce pending candidates without an existing Evidence document, but this version does not automatically promote candidates into authoritative personal data.
 
-新包重新开始任务；旧项目运行的 rules hash 不同，不导入或继续旧 run。
+Start fresh tasks in this package. Historical project runs have different rule hashes and should not be imported or resumed.
 
-## 启动与输入
+## Starting the Agent and Providing Inputs
 
-在包根目录运行：
+From the package root, run:
 
 ```bash
 hermes -p career-decision --in "$PWD"
 ```
 
-在对话里给出实际文件的完整路径，并说明任务。JD 可使用 JPG/PNG/WebP、PDF 或 TXT；简历审核输入是实际 TXT，PDF 简历可用于 intake。多份输入时明确哪些是 JD，哪些是简历。当前每文件上限 20 MB、PDF 上限 10 页，上下文超限会明确失败。
+Provide the full paths to actual files in the conversation and describe the task. JD inputs can be JPG/PNG/WebP, PDF, or TXT. Resume review requires actual TXT content; PDF resumes can be used for intake. When providing multiple files, identify which contain the JD and which contain the resume. Each file is limited to 20 MB, PDFs to 10 pages, and oversized context fails explicitly.
 
-请求新 JD 分析时说明：使用当前 Evidence，逐项判断重要性/支持程度、行业及业务场景、工作性质、风险和简历建议，按现有模板生成 HTML，返回实际文件路径。
+For a new JD analysis, request use of the current Evidence document, requirement-level importance and support assessments, industry and business-scenario comparisons, work nature, risks, and resume suggestions. Ask for an HTML report using the existing template and the actual output file path.
 
-输出保存到配置的本地 `runs_dir`。`validated_pending_review` 表示确定性检查通过；事实确认、语义审核和本人验收仍需分别完成。
+Outputs are saved to the configured local `runs_dir`. The status `validated_pending_review` means deterministic checks passed. Fact confirmation, semantic review, and user acceptance remain separate steps.
 
-## 上传 Git
+## Publishing to Git
 
-提交本包代码文件即可。`.gitignore` 排除个人资料、配置、输出、凭据和环境。运行时数据不在此包中；本包没有样例个人事实、历史报告或自动创建的偏好。完整验证记录由整理任务单独保存，不作为 Agent 运行依赖。
+Commit only this package's source files. `.gitignore` excludes personal data, runtime configuration, outputs, credentials, and environments. Runtime data is not included, and the package contains no sample personal facts, historical reports, or automatically created preferences. Full verification records are stored separately from the package and are not Agent runtime dependencies.
